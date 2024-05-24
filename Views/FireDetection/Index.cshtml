@@ -43,7 +43,7 @@
         }
 
         #map {
-            height: 100%;
+            height: 87%;
             width: 100%;
         }
     </style>
@@ -61,32 +61,25 @@
                         <button type="submit" class="btn btn-primary btn-block">Upload</button>
                     </form>
 
-                    @*@if (ViewBag.Prediction != null)
+                    @if (ViewBag.Prediction != null)
                     {
                         <div class="prediction-result alert alert-info text-center">
                             <h3>Prediction: @ViewBag.Prediction</h3>
                         </div>
-                    }*@
-
-                    @if(ViewBag.Prediction2 != null)
+                    }
+                    @if (ViewBag.Prediction2 != null)
                     {
                         <div class="prediction-result alert alert-info text-center">
-                            <h3>Prediction: @ViewBag.Prediction2</h3>
+                            <h3>Prediction: @ViewBag.Prediction</h3>
                         </div>
-                        @if (ViewBag.Location != null)
-                        {
-                            <div class="location-result alert alert-info text-center">
-                                <h4>Location Details</h4>
-                                <p>@ViewBag.Location</p>
-                            </div>
-                        }
                     }
 
-                    @if (ViewBag.Location != null)
+                    @if (ViewBag.Latitude != null && ViewBag.Longitude != null)
                     {
                         <div class="location-result alert alert-info text-center">
                             <h4>Location Details</h4>
-                            <p>@ViewBag.Location</p>
+                            <p>Latitude: @ViewBag.Latitude</p>
+                            <p>Longitude: @ViewBag.Longitude</p>
                         </div>
                     }
                 </div>
@@ -102,28 +95,34 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcj44JI7A5KZPrdG9C9BRYJ5BxX4r034c&callback=initMap" async defer></script>
     <script>
         let map;
+        let marker;
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 39.9334, lng: 32.8597 },
-                zoom: 6
+                zoom: 6,
+                mapTypeId: 'satellite',
+
             });
 
         @if (ViewBag.Latitude != null && ViewBag.Longitude != null)
         {
             <text>
-                    let latitude = @ViewBag.Latitude;
-                let longitude = @ViewBag.Longitude;
+                                        var latitude = parseFloat("@ViewBag.Latitude".replace(",", "."));
+                var longitude = parseFloat("@ViewBag.Longitude".replace(",", "."));
                 addMarker(latitude, longitude);
             </text>
         }
                         }
 
         function addMarker(lat, lng) {
-            const marker = new google.maps.Marker({
+            if (marker) {
+                marker.setMap(null);
+            }
+            marker = new google.maps.Marker({
                 position: { lat: lat, lng: lng },
                 map: map,
-                title: 'fire'
+                title: 'Fire detected'
             });
 
             const geocoder = new google.maps.Geocoder();
@@ -131,7 +130,7 @@
                 if (status === 'OK') {
                     if (results[0]) {
                         const locationDetails = results[0].formatted_address;
-                        $('.location-result').html(`<h4>Location Details</h4><p>${locationDetails}</p>`);
+                        document.querySelector('.location-result').innerHTML = `<h4>Location Details</h4><p>${locationDetails}</p>`;
                     } else {
                         console.error('No results found');
                     }

@@ -67,6 +67,7 @@
                             <h3>Prediction: @ViewBag.Prediction</h3>
                         </div>
                     }
+                  
 
                     @if (ViewBag.Latitude != null && ViewBag.Longitude != null)
                     {
@@ -77,6 +78,20 @@
                         </div>
                     }
                 </div>
+                @if (ViewBag.Prediction2 != null)
+                {
+                    <div class="prediction-result alert alert-info text-center">
+                        <h3>Prediction: @ViewBag.Prediction2</h3>
+                    </div>
+                    @if (ViewBag.Latitude2 != null && ViewBag.Longitude2 != null)
+                    {
+                        <div class="location-result alert alert-info text-center">
+                            <h4>Location Details</h4>
+                            <p>Latitude: @ViewBag.Latitude2</p>
+                            <p>Longitude: @ViewBag.Longitude2</p>
+                        </div>
+                    }
+                }
             </div>
             <div class="col-md-8">
                 <div id="map"></div>
@@ -107,7 +122,18 @@
                 addMarker(latitude, longitude);
             </text>
         }
-                }
+
+        @if (ViewBag.Latitude2 != null && ViewBag.Longitude2 != null)
+        {
+            <text>
+                var latitude = parseFloat("@ViewBag.Latitude2".replace(",", "."));
+                var longitude = parseFloat("@ViewBag.Longitude2".replace(",", "."));
+                addMarker(latitude, longitude);
+            </text>
+        }
+
+        
+        }
 
         function addMarker(lat, lng) {
             if (marker) {
