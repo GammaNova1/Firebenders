@@ -38,12 +38,12 @@
         .col-md-8 {
             flex: 0 0 75%;
             max-width: 75%;
-            height: 100vh; 
+            height: 100vh;
             padding-left: 15px;
         }
 
         #map {
-            height: 100%;
+            height: 87%;
             width: 100%;
         }
     </style>
@@ -68,11 +68,12 @@
                         </div>
                     }
 
-                    @if (ViewBag.Location != null)
+                    @if (ViewBag.Latitude != null && ViewBag.Longitude != null)
                     {
                         <div class="location-result alert alert-info text-center">
                             <h4>Location Details</h4>
-                            <p>@ViewBag.Location</p>
+                            <p>Latitude: @ViewBag.Latitude</p>
+                            <p>Longitude: @ViewBag.Longitude</p>
                         </div>
                     }
                 </div>
@@ -88,28 +89,34 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcj44JI7A5KZPrdG9C9BRYJ5BxX4r034c&callback=initMap" async defer></script>
     <script>
         let map;
+        let marker;
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 39.9334, lng: 32.8597 }, 
-                zoom: 6
+                center: { lat: 39.9334, lng: 32.8597 },
+                zoom: 6,
+                mapTypeId: 'satellite',
+
             });
 
         @if (ViewBag.Latitude != null && ViewBag.Longitude != null)
         {
             <text>
-                    let latitude = @ViewBag.Latitude;
-                let longitude = @ViewBag.Longitude;
+                            var latitude = parseFloat("@ViewBag.Latitude".replace(",", "."));
+                var longitude = parseFloat("@ViewBag.Longitude".replace(",", "."));
                 addMarker(latitude, longitude);
             </text>
         }
                 }
 
         function addMarker(lat, lng) {
-            const marker = new google.maps.Marker({
+            if (marker) {
+                marker.setMap(null);
+            }
+            marker = new google.maps.Marker({
                 position: { lat: lat, lng: lng },
                 map: map,
-                title: 'Fire Detected'
+                title: 'Fire detected'
             });
 
             const geocoder = new google.maps.Geocoder();
@@ -117,7 +124,7 @@
                 if (status === 'OK') {
                     if (results[0]) {
                         const locationDetails = results[0].formatted_address;
-                        $('.location-result').html(`<h4>Location Details</h4><p>${locationDetails}</p>`);
+                        document.querySelector('.location-result').innerHTML = `<h4>Location Details</h4><p>${locationDetails}</p>`;
                     } else {
                         console.error('No results found');
                     }

@@ -29,7 +29,6 @@ namespace Firebenders.Controllers
                 return View("Index");
             }
 
-            // Save the image to a temporary location
             var filePath = Path.GetTempFileName();
             using (var stream = System.IO.File.Create(filePath))
             {
@@ -48,11 +47,10 @@ namespace Firebenders.Controllers
 
             ViewBag.Prediction = prediction;
 
-            if (prediction.ToLower() == "fire detected")
+            if (prediction.ToLower() == "fire")
             {
-                // Generate random coordinates within Turkey's bounding box
                 Random rand = new Random();
-                double latitude = rand.NextDouble() * (42.1071 - 36.0) + 36.0;
+                double latitude = rand.NextDouble() * (42.1071 - 36.0) + 35.0;
                 double longitude = rand.NextDouble() * (44.7931 - 26.0) + 26.0;
 
                 ViewBag.Latitude = latitude;
