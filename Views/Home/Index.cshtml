@@ -2,17 +2,130 @@
     ViewData["Title"] = "Fire Detection";
 }
 
-<h2>Fire Detection</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
 
-<form asp-controller="Home" asp-action="Predict" method="post" enctype="multipart/form-data">
-    <div>
-        <label for="image">Select image:</label>
-        <input type="file" name="image" />
+        .container {
+            max-width: 100%;
+        }
+
+        .card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .col-md-4 {
+            flex: 0 0 25%;
+            max-width: 25%;
+        }
+
+        .col-md-8 {
+            flex: 0 0 75%;
+            max-width: 75%;
+            height: 100vh; 
+            padding-left: 15px;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <form asp-controller="Home" asp-action="Predict" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="image">Select image:</label>
+                            <input type="file" class="form-control-file" name="image" />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                    </form>
+
+                    @if (ViewBag.Prediction != null)
+                    {
+                        <div class="prediction-result alert alert-info text-center">
+                            <h3>Prediction: @ViewBag.Prediction</h3>
+                        </div>
+                    }
+
+                    @if (ViewBag.Location != null)
+                    {
+                        <div class="location-result alert alert-info text-center">
+                            <h4>Location Details</h4>
+                            <p>@ViewBag.Location</p>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div id="map"></div>
+            </div>
+        </div>
     </div>
-    <button type="submit">Upload</button>
-</form>
 
-@if (ViewBag.Prediction != null)
-{
-    <h3>Prediction: @ViewBag.Prediction</h3>
-}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcj44JI7A5KZPrdG9C9BRYJ5BxX4r034c&callback=initMap" async defer></script>
+    <script>
+        let map;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 39.9334, lng: 32.8597 }, 
+                zoom: 6
+            });
+
+        @if (ViewBag.Latitude != null && ViewBag.Longitude != null)
+        {
+            <text>
+                    let latitude = @ViewBag.Latitude;
+                let longitude = @ViewBag.Longitude;
+                addMarker(latitude, longitude);
+            </text>
+        }
+                }
+
+        function addMarker(lat, lng) {
+            const marker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                title: 'Fire Detected'
+            });
+
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ location: { lat: lat, lng: lng } }, (results, status) => {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        const locationDetails = results[0].formatted_address;
+                        $('.location-result').html(`<h4>Location Details</h4><p>${locationDetails}</p>`);
+                    } else {
+                        console.error('No results found');
+                    }
+                } else {
+                    console.error('Geocoder failed due to: ' + status);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

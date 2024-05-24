@@ -47,6 +47,18 @@ namespace Firebenders.Controllers
             var prediction = JObject.Parse(jsonResponse)["prediction"].ToString();
 
             ViewBag.Prediction = prediction;
+
+            if (prediction.ToLower() == "fire detected")
+            {
+                // Generate random coordinates within Turkey's bounding box
+                Random rand = new Random();
+                double latitude = rand.NextDouble() * (42.1071 - 36.0) + 36.0;
+                double longitude = rand.NextDouble() * (44.7931 - 26.0) + 26.0;
+
+                ViewBag.Latitude = latitude;
+                ViewBag.Longitude = longitude;
+            }
+
             return View("Index");
         }
     }
