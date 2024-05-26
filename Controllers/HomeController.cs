@@ -58,11 +58,12 @@ namespace Firebenders.Controllers
                     Random rand = new Random();
                     double latitude = rand.NextDouble() * (42.1071 - 36.0) + 35.0;
                     double longitude = rand.NextDouble() * (44.7931 - 26.0) + 26.0;
-
+                  
                     ViewBag.Latitude2 = latitude;
                     ViewBag.Longitude2 = longitude;
-                }
 
+
+                }
                 return View("Index");
             }
             catch (Exception ex)
@@ -92,6 +93,7 @@ namespace Firebenders.Controllers
                 // Send the image to the Flask API
                 var form = new MultipartFormDataContent();
                 form.Add(new StreamContent(System.IO.File.OpenRead(filePath)), "img", image.FileName);
+                ViewBag.ImagePath = filePath;
 
                 var response = await _httpClient.PostAsync("http://localhost:5000/predictpath", form);
                 response.EnsureSuccessStatusCode();
@@ -99,7 +101,7 @@ namespace Firebenders.Controllers
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 var prediction = JObject.Parse(jsonResponse)["prediction"].ToString();
 
-                ViewBag.Prediction = prediction;
+                ViewBag.Prediction = prediction; // Burada 'ViewBag.Prediction' yerine 'ViewBag.ImagePath' olmalı
 
                 if (prediction.ToLower() == "fire")
                 {
@@ -119,6 +121,7 @@ namespace Firebenders.Controllers
                 return View("Hata");
             }
         }
+
 
     }
 }
