@@ -95,7 +95,9 @@
                          <img src= @ViewBag.ImagePath alt="Predicted Image">
                      </div>*/
 }
-                    
+                        <div class="image-frame">
+                            <img src="@ViewBag.ImagePath" alt="Predicted Image">
+                        </div>
                   }
 
                     @if (ViewBag.Latitude != null && ViewBag.Longitude != null)
@@ -187,7 +189,7 @@
                 if (status === 'OK') {
                     if (results[0]) {
                         const locationDetails = results[0].formatted_address;
-        @ViewBag.Adres = results[0].formatted_address;
+                        //@ViewBag.Adres = results[0].formatted_address;
                         document.querySelector('.location-result').innerHTML = `<h4>Location Details</h4><p>${locationDetails}</p>`;
                     } else {
                         console.error('No results found');
