@@ -78,10 +78,10 @@
                 <div class="card">
                     <form asp-controller="Home" asp-action="Predict" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="image">Select image:</label>
+                            <label for="image">Görsel Seçiniz:</label>
                             <input type="file" class="form-control-file" name="image" />
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                        <button type="submit" class="btn btn-warning btn-block">Yükle</button>
                     </form>
 
                   @if (ViewBag.Prediction != null)
@@ -89,7 +89,7 @@
                       <!-- Burada 'ViewBag.Prediction' yerine 'ViewBag.ImagePath' olmalı -->
 {
                      <div class="prediction-result alert alert-info text-center">
-                         <h3>Prediction: @ViewBag.Prediction</h3>
+                         <h3>Tahmin: @ViewBag.Prediction</h3>
                      </div>
                     /* <div class="image-frame">
                          <img src= @ViewBag.ImagePath alt="Predicted Image">
@@ -103,16 +103,16 @@
                     @if (ViewBag.Latitude != null && ViewBag.Longitude != null)
                     {
                         <div class="location-result alert alert-info text-center">
-                            <h4>Location Details</h4>
-                            <p>Latitude: @ViewBag.Latitude</p>
-                            <p>Longitude: @ViewBag.Longitude</p>
+                            <h4>Konum Bilgileri</h4>
+                            <p>Enlem: @ViewBag.Latitude</p>
+                            <p>Boylam: @ViewBag.Longitude</p>
                         </div>
                     }
 
 
                 </div>
 
-                @if (ViewBag.Prediction2 != null)
+                @* @if (ViewBag.Prediction2 != null)
                 {
                     <div class="prediction-result alert alert-info text-center">
                         <h3>Prediction: @ViewBag.Prediction2</h3>
@@ -133,7 +133,7 @@
                             <p>Longitude: @ViewBag.Longitude2</p>
                         </div>
                     }
-                }
+                } *@
             </div>
             <div class="col-md-8">
                 <div id="map"></div>
@@ -190,7 +190,7 @@
                     if (results[0]) {
                         const locationDetails = results[0].formatted_address;
                         //@ViewBag.Adres = results[0].formatted_address;
-                        document.querySelector('.location-result').innerHTML = `<h4>Location Details</h4><p>${locationDetails}</p>`;
+                        document.querySelector('.location-result').innerHTML = `<h4>Konum Detayları</h4><p>${locationDetails}</p>`;
                     } else {
                         console.error('No results found');
                     }

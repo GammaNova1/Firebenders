@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Firebenders - Ana Sayfa";
+}
+
+<div class="hero bg-dark text-white d-flex align-items-center justify-content-center" style="height: 90vh; position: relative;">
+    <div class="container text-center">
+        <h1 class="display-2 font-weight-bold mb-4 animate__animated animate__fadeInDown" style="font-size: 6rem;">FIREBENDERS</h1>
+        <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s" style="font-size: 1.5rem;">Eve Çıkmamız İçin İhaleyi Bize Verin</p>
+        <a href="#features" class="btn btn-outline-light btn-lg animate__animated animate__fadeInUp animate__delay-2s">DAHA FAZLA</a>
+    </div>
+</div>
+
+<section id="features" class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5 text-center">
+            <div class="col-lg-12">
+                <br /><br />
+                <h2 class="font-weight-light">Neden Firebenders?</h2>
+                <p class="text-muted">Firebenders'ı en üstün yangın algılama çözümü yapan temel özellikleri keşfedin.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 mb-4 animate__animated animate__fadeInLeft animate__delay-1s">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Kullanışlı Arayüz</h5>
+                        <p class="card-text">Yangınlara müdahalenizi güçlendirin: dinamik harita arayüzünde her yangının yerini tam olarak belirleyin.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4 animate__animated animate__fadeInUp animate__delay-2s">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Yüksek Doğruluk</h5>
+                        <p class="card-text">Yangın tespitinde yüksek doğruluk sağlamak için gelişmiş yapay zeka ve makine öğreniminden yararlanıyoruz.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4 animate__animated animate__fadeInRight animate__delay-3s">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Kolay Entegrasyon</h5>
+                        <p class="card-text">Kapsamlı bir güvenlik çözümü için mevcut sistemlerinizle sorunsuz bir şekilde entegre edin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="bg-light py-5">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 animate__animated animate__fadeInLeft animate__delay-1s">
+                <img src="~/firebenders/fire044.png" class="img-fluid rounded" alt="Yangın İstatistikleri">
+            </div>
+            <div class="col-md-6 animate__animated animate__fadeInRight animate__delay-2s">
+                <div class="p-5">
+                    <h2 class="text-danger">Yangın İstatistikleri</h2>
+                    <p class="lead">Ülkemizdeki ve dünyadaki yangın istatistiklerini inceleyebilir, yangınların nedenleri ve etkilerine dair detaylı analizlere erişebilirsiniz.</p>
+                  
+                    <a class="btn btn-danger btn-lg" asp-controller="Home" asp-action="Makale">Makaleyi Oku</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-12">
+                <h2 class="font-weight-light">Bizimle İletişime Geçin</h2>
+                <p class="text-muted">Herhangi bir sorunuz mu var veya daha fazla bilgiye mi ihtiyacınız var? Bize ulaşın!</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6 animate__animated animate__fadeInUp animate__delay-1s">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="İsim">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="E-Mail">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" placeholder="Mesaj"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger btn-block">Gönder</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Styles {
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #ff0000, #ff4500, #ff8c00);
+            color: #fff;
+        }
+
+        .btn-outline-light {
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .btn-outline-light:hover {
+                background-color: #ffffff;
+                color: #000000;
+            }
+
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 10px;
+        }
+
+            .card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
+
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+
+        .form-control:focus {
+            border-color: #ff4500;
+            box-shadow: none;
+        }
+    </style>
+}
