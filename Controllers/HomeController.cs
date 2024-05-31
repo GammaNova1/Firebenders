@@ -1,5 +1,7 @@
-﻿using Firebenders.Models;
+﻿using Firebenders.Data;
+using Firebenders.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 
@@ -8,10 +10,12 @@ namespace Firebenders.Controllers
     public class HomeController : Controller
     {
         private readonly HttpClient _httpClient;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(HttpClient httpClient)
+        public HomeController(HttpClient httpClient,ApplicationDbContext context)
         {
             _httpClient = httpClient;
+            _context = context;
         }
 
         [HttpGet]
@@ -30,7 +34,8 @@ namespace Firebenders.Controllers
         [HttpGet]
         public IActionResult Arsiv()
         {
-            return View("Arsiv");
+            var records = _context.Records.Where(x=>x.RecordStatus == true).ToList();
+            return View(records);
         }
 
         [HttpGet]

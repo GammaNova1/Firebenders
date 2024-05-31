@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Firebenders.Models.Records>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Arşiv</title>
+</head>
+<body>
+    <h2>Arşiv</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Record Name</th>
+                <th>Image</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@if (Model != null && Model.Any())
+            {*@
+                @foreach (var record in Model)
+                {
+                    <tr>
+                        <td>@record.RecordName</td>
+                        <td><img src="@record.RecordImage" alt="@record.RecordName" style="width:100px;height:100px;" /></td>
+                        <td>@record.RecordLatitude</td>
+                        <td>@record.RecordLongtitude</td>
+                        <td>@(record.RecordStatus ? "Yangın" : "Yangın Yok")</td>
+                    </tr>
+                }
+           @* }
+            else
+            {
+                <tr>
+                    <td colspan="5">Kayıt bulunamadı.</td>
+                </tr>
+            }*@
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,17 +1,19 @@
-﻿using Firebenders.Models;
+﻿using Firebenders.Data;
+using Firebenders.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
 
 namespace Firebenders.Controllers
 {
     public class FireDetectionController : Controller
     {
         private readonly HttpClient _httpClient;
+        private readonly ApplicationDbContext _context;
 
-        public FireDetectionController(HttpClient httpClient)
+        public FireDetectionController(HttpClient httpClient, ApplicationDbContext context)
         {
             _httpClient = httpClient;
+            _context = context;
         }
 
         [HttpGet]
@@ -23,7 +25,8 @@ namespace Firebenders.Controllers
         [HttpGet]
         public IActionResult Arsiv()
         {
-            return View("Arsiv");
+             var records = _context.Records.ToList();
+            return View(records);
         }
 
         [HttpGet]
@@ -39,8 +42,9 @@ namespace Firebenders.Controllers
 
                 int number = rnd.Next(0, 50);
                 string numberString = number.ToString("D3");
-
-                string imageUrl = baseUrl + $"{category}{numberString}.png";
+                string imgName = $"{category}{numberString}.png";
+                ViewBag.imgName = imgName;
+                string imageUrl = baseUrl + imgName;
 
                 var imageResponse = await _httpClient.GetAsync(imageUrl);
                 imageResponse.EnsureSuccessStatusCode();
@@ -54,6 +58,9 @@ namespace Firebenders.Controllers
 
                 ViewBag.Prediction2 = prediction;
                 ViewBag.ImageUrl = imageUrl;
+
+                double latitude = 0, longitude = 0;
+
                 if (prediction.ToLower() == "fire")
                 {
                     Random rand = new Random();
@@ -62,16 +69,42 @@ namespace Firebenders.Controllers
                     double minLongitude = 28.0; // Türkiye'nin batı sınırı
                     double maxLongitude = 43.0; // Türkiye'nin doğu sınırı
 
-                    // Türkiye'nin içindeki en geniş dikdörtgenin sınırlarını belirle
-                    double latitude, longitude;
-
                     latitude = rand.NextDouble() * (maxLatitude - minLatitude) + minLatitude;
                     longitude = rand.NextDouble() * (maxLongitude - minLongitude) + minLongitude;
 
-
                     ViewBag.Latitude = latitude;
                     ViewBag.Longitude = longitude;
+                    var fireRecord = new Records
+                    {
+                        RecordName = imgName,
+                        RecordImage = imageUrl,
+                        RecordLatitude = latitude.ToString(),
+                        RecordLongtitude = longitude.ToString(),
+                        RecordStatus = true,
+                        RecordDate = DateTime.Now
+                    };
+                    _context.Records.Add(fireRecord);
+                    await _context.SaveChangesAsync();
                 }
+               
+                else
+                {
+                    var fireRecord = new Records
+                    {
+                        RecordName = imgName,
+                        RecordImage = imageUrl,
+                        RecordLatitude = latitude.ToString(),
+                        RecordLongtitude = longitude.ToString(),
+                        RecordStatus = false,
+                        RecordDate = DateTime.Now
+                    };
+                    _context.Records.Add(fireRecord);
+                    await _context.SaveChangesAsync();
+                }
+                
+
+                
+
                 return View("Index");
             }
             catch (Exception ex)
@@ -80,61 +113,5 @@ namespace Firebenders.Controllers
                 return View("Hata");
             }
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> Predict(IFormFile image)
-        //{
-        //    if (image == null || image.Length == 0)
-        //    {
-        //        ViewBag.Message = "Image is not selected";
-        //        return View("Index");
-        //    }
-
-        //    try
-        //    {
-        //        // Kullanıcının yüklediği dosya yolunu belirleyin
-        //        var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "firebenders");
-        //        if (!Directory.Exists(uploads))
-        //        {
-        //            Directory.CreateDirectory(uploads);
-        //        }
-
-        //        var filePath = Path.Combine(uploads, image.FileName);
-        //        using (var stream = new FileStream(filePath, FileMode.Create))
-        //        {
-        //            await image.CopyToAsync(stream);
-        //        }
-
-        //        // Resmi Flask API'ye gönder
-        //        var form = new MultipartFormDataContent();
-        //        form.Add(new StreamContent(System.IO.File.OpenRead(filePath)), "img", image.FileName);
-        //        ViewBag.ImagePath = "/firebenders/" + image.FileName; // Relative path for displaying the image in the view
-
-        //        var response = await _httpClient.PostAsync("http://localhost:5000/predictpath", form);
-        //        response.EnsureSuccessStatusCode();
-
-        //        var jsonResponse = await response.Content.ReadAsStringAsync();
-        //        var prediction = JObject.Parse(jsonResponse)["prediction"].ToString();
-
-        //        ViewBag.Prediction = prediction;
-
-        //        if (prediction.ToLower() == "fire")
-        //        {
-        //            Random rand = new Random();
-        //            double latitude = rand.NextDouble() * (42.1071 - 36.0) + 35.0;
-        //            double longitude = rand.NextDouble() * (44.7931 - 26.0) + 26.0;
-
-        //            ViewBag.Latitude = latitude;
-        //            ViewBag.Longitude = longitude;
-        //        }
-
-        //        return View("Index");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewBag.Error = $"Error: {ex.Message}";
-        //        return View("Hata");
-        //    }
-        //}
     }
 }

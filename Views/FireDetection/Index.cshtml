@@ -48,26 +48,26 @@
         }
 
         .image-frame {
-            width: 256px; /* Frame genişliğini ayarlayın */
-            height: 256px; /* Frame yüksekliğini ayarlayın */
+            width: 256px;
+            height: 256px;
             border: 2px solid #ddd;
             margin: 10px auto;
             padding: 5px;
             text-align: center;
             background-color: #fff;
-            overflow: hidden; /* Eğer resim çerçeveyi aşarsa kes */
+            overflow: hidden;
         }
 
             .image-frame img {
                 width: 100%;
                 height: 100%;
-                object-fit: cover; /* Resmi çerçeve boyutlarına sığacak şekilde büyüt veya küçült */
+                object-fit: cover;
             }
 
             .image-frame img {
                 max-width: 100%;
                 max-height: 100%;
-                object-fit: contain; /* Resmin çerçeveye sığmasını sağlayın */
+                object-fit: contain;
             }
     </style>
 </head>
@@ -76,26 +76,20 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
-                   @*  <form asp-controller="Home" asp-action="Predict" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="image">Select image:</label>
-                            <input type="file" class="form-control-file" name="image" />
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Upload</button>
-                        <h1>Automatic version</h1>
+                    @*  <form asp-controller="Home" asp-action="Predict" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                    <label for="image">Select image:</label>
+                    <input type="file" class="form-control-file" name="image" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                    <h1>Automatic version</h1>
                     </form> *@
 
                     @if (ViewBag.Prediction != null)
                     {
-                        <!-- Burada 'ViewBag.Prediction' yerine 'ViewBag.ImagePath' olmalı -->
-                        {
-                            <div class="prediction-result alert alert-info text-center">
-                                <h3>Tahmin: @ViewBag.Prediction</h3>
-                            </div>
-                            /* <div class="image-frame">
-                            <img src= @ViewBag.ImagePath alt="Predicted Image">
-                            </div>*/
-                        }
+                        <div class="prediction-result alert alert-info text-center">
+                            <h3>Tahmin: @ViewBag.Prediction</h3>
+                        </div>
                         <div class="image-frame">
                             <img src="@ViewBag.ImagePath" alt="Predicted Image">
                         </div>
@@ -109,8 +103,6 @@
                             <p>Boylam: @ViewBag.Longitude</p>
                         </div>
                     }
-
-
                 </div>
 
                 @if (ViewBag.Prediction2 != null)
@@ -159,7 +151,7 @@
         @if (ViewBag.Latitude != null && ViewBag.Longitude != null)
         {
             <text>
-                                        var latitude = parseFloat("@ViewBag.Latitude".replace(",", "."));
+                            var latitude = parseFloat("@ViewBag.Latitude".replace(",", "."));
                 var longitude = parseFloat("@ViewBag.Longitude".replace(",", "."));
                 addMarker(latitude, longitude);
             </text>
@@ -168,12 +160,12 @@
         @if (ViewBag.Latitude2 != null && ViewBag.Longitude2 != null)
         {
             <text>
-                                        var latitude = parseFloat("@ViewBag.Latitude2".replace(",", "."));
+                            var latitude = parseFloat("@ViewBag.Latitude2".replace(",", "."));
                 var longitude = parseFloat("@ViewBag.Longitude2".replace(",", "."));
                 addMarker(latitude, longitude);
             </text>
         }
-                        }
+                }
 
         function addMarker(lat, lng) {
             if (marker) {
@@ -190,7 +182,6 @@
                 if (status === 'OK') {
                     if (results[0]) {
                         const locationDetails = results[0].formatted_address;
-                        //@ViewBag.Adres = results[0].formatted_address;
                         document.querySelector('.location-result').innerHTML = `<h4>Konum Detayları</h4><p>${locationDetails}</p>`;
                     } else {
                         console.error('No results found');
@@ -204,21 +195,26 @@
     <script>
         $(document).ready(function () {
             $('#uploadForm').submit(function (event) {
-                event.preventDefault(); // Formun normal submit işlemini engelle
-                var formData = new FormData($(this)[0]); // Form verilerini al
+                event.preventDefault();
+                var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url: '@Url.Action("Predict", "Home")', // Tahmin işlevinin adresi
+                    url: '@Url.Action("Predict", "Home")',
                     type: 'POST',
                     data: formData,
                     async: false,
                     success: function (data) {
-                        $('#predictionResult').html(data); // Tahmin sonucunu güncelle
+                        $('#predictionResult').html(data);
                     },
                     cache: false,
                     contentType: false,
                     processData: false
                 });
             });
+
+            // Sayfayı her 15 saniyede bir yenile
+            setInterval(function () {
+                location.reload();
+            }, 7000); // 15000 milisaniye = 15 saniye
         });
     </script>
 
