@@ -12,6 +12,7 @@ namespace Firebenders.Models
         public string RecordLongtitude { get; set; }
         public bool RecordStatus { get; set; }
         public DateTime RecordDate { get; set; }
+        public bool RecordStyle { get; set; }   
 
     }
 }

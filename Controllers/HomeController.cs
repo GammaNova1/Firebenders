@@ -90,14 +90,42 @@ namespace Firebenders.Controllers
                     double maxLongitude = 43.0; // Türkiye'nin doğu sınırı
 
                     // Türkiye'nin içindeki en geniş dikdörtgenin sınırlarını belirle
-                    double latitude, longitude;
+                    double latitude, longitude=0;
 
                     latitude = rand.NextDouble() * (maxLatitude - minLatitude) + minLatitude;
                     longitude = rand.NextDouble() * (maxLongitude - minLongitude) + minLongitude;
-
+                    string imageFileName = image.FileName;
+                    string Path = ViewBag.ImagePath;
 
                     ViewBag.Latitude = latitude;
                     ViewBag.Longitude = longitude;
+                    var fireRecord = new Records
+                    {
+                        RecordName = imageFileName,
+                        RecordImage = Path,
+                        RecordLatitude = latitude.ToString(),
+                        RecordLongtitude = longitude.ToString(),
+                        RecordStatus = true,
+                        RecordDate = DateTime.Now,
+                        RecordStyle = false
+                    };
+                    _context.Records.Add(fireRecord);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    var fireRecord = new Records
+                    {
+                        RecordName =image.FileName,
+                        RecordImage = ViewBag.ImagePath,
+                        RecordLatitude = ViewBag.latitude,
+                        RecordLongtitude = ViewBag.longitude,
+                        RecordStatus = false,
+                        RecordDate = DateTime.Now,
+                        RecordStyle = false
+                    };
+                    _context.Records.Add(fireRecord);
+                    await _context.SaveChangesAsync();
                 }
 
                 return View("Index");

@@ -81,7 +81,8 @@ namespace Firebenders.Controllers
                         RecordLatitude = latitude.ToString(),
                         RecordLongtitude = longitude.ToString(),
                         RecordStatus = true,
-                        RecordDate = DateTime.Now
+                        RecordDate = DateTime.Now,
+                        RecordStyle = true
                     };
                     _context.Records.Add(fireRecord);
                     await _context.SaveChangesAsync();
@@ -96,7 +97,8 @@ namespace Firebenders.Controllers
                         RecordLatitude = latitude.ToString(),
                         RecordLongtitude = longitude.ToString(),
                         RecordStatus = false,
-                        RecordDate = DateTime.Now
+                        RecordDate = DateTime.Now,
+                        RecordStyle = true
                     };
                     _context.Records.Add(fireRecord);
                     await _context.SaveChangesAsync();
