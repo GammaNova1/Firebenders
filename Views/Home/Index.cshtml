@@ -48,28 +48,23 @@
         }
 
         .image-frame {
-            width: 256px; /* Frame genişliğini ayarlayın */
-            height: 256px; /* Frame yüksekliğini ayarlayın */
+            width: 100%; /* Çerçevenin genişliğini ayarlayın */
+            height: 600px; /* Çerçevenin yüksekliğini ayarlayın */
             border: 2px solid #ddd;
             margin: 10px auto;
             padding: 5px;
             text-align: center;
             background-color: #fff;
-            overflow: hidden; /* Eğer resim çerçeveyi aşarsa kes */
+            overflow: hidden;
         }
 
             .image-frame img {
                 width: 100%;
                 height: 100%;
-                object-fit: cover; /* Resmi çerçeve boyutlarına sığacak şekilde büyüt veya küçült */
-            }
-
-            .image-frame img {
-                max-width: 100%;
-                max-height: 100%;
-                object-fit: contain; /* Resmin çerçeveye sığmasını sağlayın */
+                object-fit: cover;
             }
     </style>
+
 </head>
 <body>
     <div class="container">
