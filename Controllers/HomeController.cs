@@ -34,8 +34,16 @@ namespace Firebenders.Controllers
         [HttpGet]
         public IActionResult Arsiv()
         {
-            var records = _context.Records.Where(x=>x.RecordStatus == true).ToList();
-            return View(records);
+            try
+            {
+                var records = _context.Records.Where(x => x.RecordStatus == true).ToList();
+                return View(records);
+            }
+            catch (Exception)
+            {
+                return View("Hata"); 
+            }
+          
         }
 
         [HttpGet]

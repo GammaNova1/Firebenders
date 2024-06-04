@@ -4,8 +4,8 @@
 
 <div class="hero bg-dark text-white d-flex align-items-center justify-content-center" style="height: 90vh; position: relative;">
     <div class="container text-center">
-        <h1 class="display-2 font-weight-bold mb-4 animate__animated animate__fadeInDown" style="font-size: 6rem;">FIREBENDERS</h1>
-        <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s" style="font-size: 1.5rem;">Eve Çıkmamız İçin İhaleyi Bize Verin</p>
+        <h1 class="display-2 font-weight-bold mb-4" id="firebenders-title" style="font-size: 6rem;"></h1>
+        <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s" style="font-size: 1.5rem;">Advanced Artificial Intelligence Solutions</p>
         <a href="#features" class="btn btn-outline-light btn-lg animate__animated animate__fadeInUp animate__delay-2s">DAHA FAZLA</a>
     </div>
 </div>
@@ -58,7 +58,7 @@
                 <div class="p-5">
                     <h2 class="text-danger">Yangın İstatistikleri</h2>
                     <p class="lead">Ülkemizdeki ve dünyadaki yangın istatistiklerini inceleyebilir, yangınların nedenleri ve etkilerine dair detaylı analizlere erişebilirsiniz.</p>
-                  
+
                     <a class="btn btn-danger btn-lg" asp-controller="Home" asp-action="Makale">Makaleyi Oku</a>
 
                 </div>
@@ -98,7 +98,6 @@
     </div>
 </section>
 
-
 @section Styles {
     <style>
         body {
@@ -125,6 +124,7 @@
         .card {
             transition: transform 0.3s, box-shadow 0.3s;
             border-radius: 10px;
+            background: linear-gradient(135deg, #ececec, #f4f4f4, #fafafa);
         }
 
             .card:hover {
@@ -140,5 +140,31 @@
             border-color: #ff4500;
             box-shadow: none;
         }
+
+        /* Harflerin tek tek yazılması için stil */
+        #firebenders-title span {
+            opacity: 0;
+            display: inline-block;
+            transition: opacity 0.1s;
+        }
     </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const title = "FIREBENDERS";
+            const titleElement = document.getElementById("firebenders-title");
+
+            title.split("").forEach((char, index) => {
+                const span = document.createElement("span");
+                span.textContent = char;
+                span.style.transitionDelay = `${index * 0.1}s`;
+                titleElement.appendChild(span);
+                setTimeout(() => {
+                    span.style.opacity = 1;
+                }, index * 100);
+            });
+        });
+    </script>
 }
